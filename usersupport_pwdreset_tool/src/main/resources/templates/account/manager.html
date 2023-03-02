@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>个人薪资数据</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container">
+    <script th:inline="javascript">
+        function jumpPage(currentPage) {
+            $('#currentPage').val(currentPage);
+            document.getElementById('querySalaryFilterForm').submit();
+        }
+
+        function jumpSortFieldAndSortDirPage(sortField, sortDir) {
+            sortDir = sortDir == 'desc' ? 'asc' : 'desc';
+            $('#sortField').val(sortField);
+            $('#sortDir').val(sortDir);
+            document.getElementById('querySalaryFilterForm').submit();
+        }
+
+        function jumpFilterPage() {
+            $('#currentPage').val(1);
+            var enumber = $('#filterEnumber').val();
+            var month = $('#filterMonth').val();
+            $('#enumber').val(enumber);
+            $('#month').val(month);
+            document.getElementById('querySalaryFilterForm').submit();
+        }
+    </script>
+    <form method="post"
+          th:action="@{/templates/account/findAllPaginatedByFilter}" id="querySalaryFilterForm"
+          th:object="${querySalaryFilter}">
+        <input type="hidden" name="enumber" id="enumber" th:value="${querySalaryFilter.enumber}">
+        <input type="hidden" name="month" id="month" th:value="${querySalaryFilter.month}">
+        <input type="hidden" name="page" id="page" th:value="${querySalaryFilter.currentPage}">
+        <input type="hidden" name="size" id="size" th:value="${querySalaryFilter.size}">
+        <input type="hidden" name="currentPage" id="currentPage" th:value="${querySalaryFilter.currentPage}">
+        <input type="hidden" name="sortField" id="sortField" th:value="${querySalaryFilter.sortField}">
+        <input type="hidden" name="sortDir" id="sortDir" th:value="${querySalaryFilter.sortDir}">
+    </form>
+
+    <form th:action="@{/templates/account/uploadSalaryData}" th:method="post" enctype="multipart/form-data">
+        <div class="row gy-6" style="margin-top: 15px;">
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <a th:href="@{/templates/account/exportAllSalaryList}" class="btn btn-primary">导出</a>
+            </div>
+
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <button type="submit" class="btn btn-primary">导入</button>
+            </div>
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <input class="form-control" type="file" id="uploadSalaryFile" name="salaryListFile">
+            </div>
+
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <input class="form-control" type="text" placeholder="工号" id="filterEnumber"
+                       th:value="${querySalaryFilter.enumber}">
+            </div>
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <input class="form-control" type="text" placeholder="月份" id="filterMonth"
+                       th:value="${querySalaryFilter.month}">
+            </div>
+            <div class="col-sm-6" style="width: auto;margin-bottom: 10px;">
+                <button class="btn btn-primary" onclick="jumpFilterPage()" type="button">查询</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table text-nowrap">
+            <thead>
+            <tr>
+                <th>
+                    <a href="#" th:onclick="jumpSortFieldAndSortDirPage('enumber',[[${querySalaryFilter.sortDir}]])">
+                        工号</a>
+                </th>
+                <th>
+                    <a href="#" th:onclick="jumpSortFieldAndSortDirPage('month',[[${querySalaryFilter.sortDir}]])">
+                        月份</a>
+                </th>
+                <th>
+                    实发工资
+                </th>
+                <th>岗位工资</th>
+                <th>工龄工资</th>
+                <th>绩效工资预发数</th>
+                <th>通讯补贴</th>
+                <th>绩效工资兑现数</th>
+                <th>独生子女费</th>
+                <th>补发工资</th>
+                <th>应发工资</th>
+                <th>养老保险</th>
+                <th>医疗保险</th>
+                <th>失业保险</th>
+                <th>住房公积金</th>
+                <th>补充公积金</th>
+                <th>企业年金</th>
+                <th>工会会费</th>
+                <th>税前扣款</th>
+                <th>税后扣款</th>
+                <th>个税</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="salary : ${salaryList}">
+                <td th:text="${salary.enumber}"></td>
+                <td th:text="${salary.month}"></td>
+                <td th:text="${salary.realSalary}"></td>
+                <td th:text="${salary.postSalary}"></td>
+                <td th:text="${salary.ageSalary}"></td>
+                <td th:text="${salary.performanceSalaryTotal}"></td>
+                <td th:text="${salary.communicationSubsidy}"></td>
+                <td th:text="${salary.performanceSalaryCash}"></td>
+                <td th:text="${salary.oneChildBonus}"></td>
+                <td th:text="${salary.backPay}"></td>
+                <td th:text="${salary.totalPayAmount}"></td>
+                <td th:text="${salary.endowmentInsurance}"></td>
+                <td th:text="${salary.medicalInsurance}"></td>
+                <td th:text="${salary.unemploymentInsurance}"></td>
+                <td th:text="${salary.housingProvidentFund}"></td>
+                <td th:text="${salary.supplementaryProvidentFund}"></td>
+                <td th:text="${salary.supplementaryPension}"></td>
+                <td th:text="${salary.unionDues}"></td>
+                <td th:text="${salary.preTaxDeduction}"></td>
+                <td th:text="${salary.afterTaxDeduction}"></td>
+                <td th:text="${salary.individualIncomeTax}"></td>
+                <td>
+                    <a th:href="@{/templates/account/deleteSalaryById/{id}(id=${salary.id})}" class="btn btn-danger"
+                       onclick="if(confirm('确定删除该条数据?')==false)return false;">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row col-sm-10">
+        <div class="col-sm-1">
+            共: [[${querySalaryFilter.totalElements}]] 条
+        </div>
+        <div class="col-sm-2">
+            <span>当前第 [[${querySalaryFilter.currentPage}]] 页 , 共  [[${querySalaryFilter.totalPages}]] 页</span>
+            &nbsp;
+        </div>
+        <div th:if="${querySalaryFilter.totalPages > 1}" class="col-sm-7 row">
+            <div class="col-sm-2">
+                <button class="btn btn-primary text-nowrap" type="submit" th:if="${querySalaryFilter.currentPage>1}"
+                        th:onclick="jumpPage(1)">首页
+                </button>
+                <button class="btn btn-primary text-nowrap disabled" type="submit" th:unless="${querySalaryFilter.currentPage>1}">首页
+                </button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary text-nowrap" type="submit" th:if="${querySalaryFilter.currentPage > 1}"
+                        th:onclick="jumpPage([[${querySalaryFilter.currentPage-1}]])">上一页
+                </button>
+                <button class="btn btn-primary text-nowrap disabled" type="submit" th:unless="${querySalaryFilter.currentPage > 1}">上一页
+                </button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary text-nowrap" type="submit"
+                        th:if="${querySalaryFilter.currentPage < querySalaryFilter.totalPages}"
+                        th:onclick="jumpPage([[${querySalaryFilter.currentPage+1}]])">下一页
+                </button>
+                <button class="btn btn-primary text-nowrap disabled"
+                        th:unless="${querySalaryFilter.currentPage < querySalaryFilter.totalPages}">下一页
+                </button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary text-nowrap" type="submit"
+                        th:if="${querySalaryFilter.currentPage < querySalaryFilter.totalPages}"
+                        th:onclick="jumpPage([[${querySalaryFilter.totalPages}]])">最后一页
+                </button>
+                <button class="btn btn-primary text-nowrap disabled"
+                        th:unless="${querySalaryFilter.currentPage < querySalaryFilter.totalPages}">最后一页
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

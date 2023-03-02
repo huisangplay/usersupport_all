@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>header</title>
+</head>
+<th:block th:fragment="header">
+    <header class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <form method="post" th:action="@{/}">
+                        <button class="nav-link text-white" type="submit"
+                                th:text="${'主页'}"></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" th:action="@{/pwd/resetpwd}">
+                        <button class="nav-link text-white" type="submit"
+                                th:text="${'IDEAL密码重置'}"></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" th:action="@{/}">
+                        <button class="nav-link text-white" type="submit"
+                                th:text="${'IDEAL开户'}"></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" th:action="@{/}">
+                        <button class="nav-link text-white" type="submit"
+                                th:text="${'IDEAL销户'}"></button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <form method="post" th:action="@{/}">
+                        <button class="nav-link text-white" type="submit"
+                                th:text="${'注销'}"></button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </header>
+</th:block>
+</html>

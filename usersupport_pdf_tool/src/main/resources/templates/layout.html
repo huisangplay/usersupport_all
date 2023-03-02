@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title title="主页"></title>
+    <th:block th:include="base/common::links"></th:block>
+    <style>
+        .container {
+            max-width: 50%;
+            padding-top: 20px;
+        }
+
+        .site-header {
+            background-color: rgba(0, 0, 0, .85);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        .site-header a {
+            color: #8e8e8e;
+            transition: color .15s ease-in-out;
+        }
+
+        .site-header a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+<body>
+<th:block th:include="base/header::header"></th:block>
+<th:block th:include="base/common::alert"></th:block>
+
+<!-- Content Section -->
+<section layout:fragment="content">
+    <th:block th:include="home::content"></th:block>
+</section>
+<th:block th:include="base/footer::footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>ideal密码重置</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <form method="post" th:action="@{/pwd/resetpwdsubmit}">
+
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">密码重置</h4>
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="input-group has-validation">
+                        <span class="input-group-text">工号</span>
+                        <input type="text" class="form-control" th:value="${enumber}">
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="input-group has-validation">
+                        <button type="button" class="btn btn-primary">发送蓝信验证码</button>
+                        <span class="input-group-text">验证码</span>
+                        <input type="text" class="form-control" placeholder="蓝信验证码" required name="vercode">
+                        <div class="invalid-feedback">
+                            验证码必填
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="row" style="width:99%;margin-left: 0.5%;">
+                        <button type="submit" class="btn btn-secondary">重置密码</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
